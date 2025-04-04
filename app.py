@@ -3,31 +3,24 @@ import os
 import datetime
 import subprocess
 
-app = Flask(_name_)
+app = Flask(__name__)
 
 @app.route('/htop')
 def htop():
-    # Get system username
-    username = os.getenv("USER") or os.getenv("USERNAME")
+    name = "Your Full Name"  # Replace with your name
+    username = os.getenv("USER")
+    server_time = datetime.datetime.now().astimezone().strftime('%Y-%m-%d %H:%M:%S')
 
-    # Get current time in IST
-    ist_time = datetime.datetime.utcnow() + datetime.timedelta(hours=5, minutes=30)
-    
-    # Get top output
-    top_output = subprocess.getoutput("top -b -n 1 | head -10")
+    top_output = subprocess.check_output(['top', '-b', '-n', '1']).decode('utf-8')
 
-    # HTML Output
     return f"""
-    <html>
-        <head><title>System Info</title></head>
-        <body>
-            <h2>Name: Your Full Name</h2>
-            <h3>Username: {username}</h3>
-            <h3>Server Time (IST): {ist_time.strftime('%Y-%m-%d %H:%M:%S')}</h3>
-            <pre>{top_output}</pre>
-        </body>
-    </html>
+    <h1>Name: Shivani TR</h1>
+    <h2>User: shivanirgowda</h2>
+    <h3>Server Time (IST): {server_time}</h3>
+    <h4>TOP output:</h4>
+    <pre>{top_output}</pre>
     """
 
-if _name_ == '_main_':
+if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
+  
